@@ -25,8 +25,8 @@ export class SupabaseService {
 
   constructor(public router:Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey,{
-      autoRefreshToken: true,
-      persistSession:true,
+      //autoRefreshToken: true,
+      //persistSession:true,
     });
     this.supabase.auth.onAuthStateChange(( event,session )=>{
       if (event == 'SIGNED_IN'){

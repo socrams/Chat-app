@@ -1,4 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
+import { createClient } from "@supabase/supabase-js";
+import { SupabaseService } from 'src/app/services/supabase.service';
+import { environment } from 'src/environments/environment.prod';
+
+export interface CurrentSession {
+  currentSession: currentSession;
+}
+export interface currentSession {
+  user: User;
+}
+export interface User {
+  email: string;
+}
+export interface datos {
+  nombre:string;
+  apellido:string;
+  edad:any;
+  mail:any;
+}
 
 @Component({
   selector: 'app-chat',

@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
       .then(async data => {
         await loading.dismiss();
 
-        this.router.navigateByUrl('/chat1', { replaceUrl: true });
+        this.router.navigateByUrl('/chat', { replaceUrl: true });
       }, async err => {
         await loading.dismiss();
         this.showError('Carga Fallida', err.message);
@@ -46,10 +46,10 @@ export class LoginPage implements OnInit {
   }
 
   registrarUsuario() {
-    this.router.navigateByUrl('/registrar', { replaceUrl: true })
+    this.router.navigateByUrl('/register', { replaceUrl: true })
   }
   goChat() {
-    this.router.navigateByUrl('/chat1', { replaceUrl: true })
+    this.router.navigateByUrl('/chat', { replaceUrl: true })
   }
 
   async showError(tittle, msg) {
