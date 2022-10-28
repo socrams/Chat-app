@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User,  } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 
@@ -24,8 +24,8 @@ export class SupabaseService {
   
   constructor(public router:Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey,{
-      autoRefreshToken: true,
-      persistSession:true,
+      // autoRefreshToken: true,
+      // persistSession:true,
     });
     this.supabase.auth.onAuthStateChange(( event,session )=>{
       if (event == 'SIGNED_IN'){
@@ -41,8 +41,7 @@ export class SupabaseService {
   async salirUsuario(){
     await  this.supabase.auth.signOut();
 
-    this.supabase.getSubscriptions().map(sup => {this.supabase.removeSubscription(sup);
-    });
+    //this.supabase.getSubscriptions().map(sup => {this.supabase.removeSubscription(sup)});
     this.router.navigateByUrl('/');
   }
 
@@ -59,7 +58,8 @@ export class SupabaseService {
 
   ingresarUsuario(credenciales: { email, password } ) {
     return new Promise ( async (resolve, reject) => {
-      const { error, session } = await this.supabase.auth.signIn(credenciales)
+      // const { error, session } = await this.supabase.auth.signIn(credenciales)
+      const { error, session } = await this.supabase.auth.signInWithPassword(credenciales)
       if ( error ) {
         reject ( error );
       }else{
@@ -90,22 +90,33 @@ export class SupabaseService {
 // this.supabase.auth.user()?.email
 
   cambiosChat() { //quitar evento update y delete.
-    this.supabase.from(CHAT_DB).on('*', payload => {
-      //console.log('cambios: ', payload);
+    // this.supabase.from(CHAT_DB).
+    // on('*', payload => {
+    //   //console.log('cambios: ', payload);
+    //   if (payload.eventType == 'INSERT') {
+    //     const newItem: Chat = payload.new;
+    //     this._chat.next([...this._chat.value, newItem]);
+    //   } else if (payload.eventType == 'UPDATE') {
+    //     const updatedItem: Chat = payload.new;
+    //     const newValue = this._chat.value.map(item => {
+    //       if (updatedItem.id == item.id) {
+    //         item = updatedItem;
+    //       }
+    //       return item;
+    //     })
+    //     this._chat.next(newValue);
+    //   }
+    // }).subscribe();
+    this.supabase.channel('chat')
+  .on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'chat' },
+    payload => {
       if (payload.eventType == 'INSERT') {
         const newItem: Chat = payload.new;
         this._chat.next([...this._chat.value, newItem]);
-      } else if (payload.eventType == 'UPDATE') {
-        const updatedItem: Chat = payload.new;
-        const newValue = this._chat.value.map(item => {
-          if (updatedItem.id == item.id) {
-            item = updatedItem;
-          }
-          return item;
-        })
-        this._chat.next(newValue);
-      }
-    }).subscribe();
+  )
+  .subscribe()
   }
-
+  
 }

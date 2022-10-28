@@ -39,11 +39,12 @@ export class ChatPage implements OnInit {
 
 
   async enviarMessage() {
-    const supabase = createClient(environment.supabaseUrl,environment.supabaseKey)
+    const supabase = createClient(environment.supabaseUrl,environment.supabaseKey);
     const {data, error } = await  supabase
     .from('chat')
     .insert(
-      { message: this.message , user: supabase.auth.user().email },
+      // { message: this.message , user: supabase.auth.user().email },
+      { message: this.message , user: (await supabase.auth.getSession()).data.session.user.email}
       );
       this.message = '';
       this.scrollToBottomOnInit();
