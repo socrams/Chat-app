@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="login()" [formGroup]="credenciales">
+    <div>
+      <ion-item>
+        <ion-input placeholder="correo" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type= "password" placeholder="password" formControlName="password"></ion-input>
+      </ion-item>
+      </div>
+    <ion-button type="submit" expand="block" [disabled]="!credenciales.valid"> Ingresar </ion-button>
+  </form>
+  <ion-button type="button" expand="block" (click)="registrarUsuario()" color="secondary"> Registrar </ion-button>
+</ion-content>
+
+<!-- <ion-button type="button" expand="block" (click)="goChat()" color="secondary"> Chat </ion-button> -->
+
+<!-- <ion-button type="button" expand="block" (click)="registrarUsuario()" color="secondary"> Registrar </ion-button> -->

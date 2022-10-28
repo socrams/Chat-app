@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="" color="primary"></ion-back-button>
+    </ion-buttons>
+    <ion-button slot="end" (click)="salir()">
+      <ion-icon name='log-out'></ion-icon>
+    </ion-button>
+    <ion-title>Chat-Ionic</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" #mycontent>
+  <ion-row  *ngFor="let chat of chats | async" id="ver">
+    <ion-col size="10" *ngIf="chat.user === this.mailLocal" class="message other-message">
+    <span>{{chat.message}}</span>
+      <div class="time ion-text-right"><br>
+        {{chat.created_at | date:'shortTime'}}
+      </div>
+    </ion-col>
+    <ion-col offset="2" size="10" *ngIf="chat.user != this.mailLocal" class="message my-message">
+      
+      <span>{{chat.user}}: {{chat.message}}</span>
+    
+      <div class="time ion-text-right"><br>
+        {{chat.created_at | date:'shortTime'}}
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-label></ion-label>
+    <ion-input placeholder="mensaje" [(ngModel)]="message"></ion-input>
+    <ion-button type="submit" (click)="enviarMessage()">Enviar</ion-button>
+  </ion-item>
+</ion-footer>
+

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="" color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="container">
+  <form [formGroup]="credenciales2">
+    <div class="container input-group mt-0">
+      <ion-item>
+        <ion-input placeholder="correo" formControlName="email"></ion-input>      
+      </ion-item>  
+      <ion-item>
+        <ion-input type="password" placeholder="password" formControlName="password"> </ion-input>      
+      </ion-item>
+      <ion-item>
+        <ion-input type= "text" placeholder="nombre" formControlName="name"></ion-input>
+      </ion-item>  
+      <ion-item>
+          <ion-input type="text" placeholder="apellido" formControlName="apellido"> </ion-input>
+      </ion-item>  
+        <ion-button type="button" expand="block" (click)="registrarUsuario()" color="secondary"> Registrar </ion-button>
+        
+        <!-- <ion-button (click)="mostrar()" expand="block" fill="clear" shape="round">Click me</ion-button> -->
+      </div> 
+  </form>
+  <!-- <ion-button type="button" expand="block" (click)="goLogin()" color="secondary"> back login </ion-button> -->
+</ion-content>
