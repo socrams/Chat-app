@@ -6,6 +6,11 @@ import { environment } from 'src/environments/environment.prod';
 
 const CHAT_DB = 'chat';
 
+export interface profile {
+  nombre:string;
+  apellido:string;
+  mail:any;
+  }
 
 export interface Chat {
   id: number;
@@ -22,7 +27,7 @@ export class SupabaseService {
   supabase:SupabaseClient;
   private _currentUser: BehaviorSubject<any> = new BehaviorSubject (null);
   private _chat: BehaviorSubject<any> = new BehaviorSubject ([]);
-
+  public profile:profile;
   constructor(public router:Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey,{
       //autoRefreshToken: true,
@@ -82,14 +87,25 @@ export class SupabaseService {
     const supabase =  createClient(environment.supabaseUrl, environment.supabaseKey);
     const { error } = await this.supabase
     .from('profiles')
-    .insert([
-      { nombre: credenciales.nombre,apellido: credenciales.apellido, mail:credenciales.email},
+    .insert([{ 
+      nombre: credenciales.nombre,
+      apellido: credenciales.apellido, 
+      mail:credenciales.email},
     ])
+  }
+  
+  async leerDatosUsuario(){
+    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
+    let {data:profile, error} = await this.supabase
+    .from('profiles')
+    .select('*')
+    .like('mail', this.supabase.auth.user()?.email)
+    console.log(profile)  
   }
 
   cambiosChat() { //quitar evento update y delete.
     this.supabase.from(CHAT_DB).on('*', payload => {
-      console.log('cambios: ', payload);
+      //console.log('cambios: ', payload);
       if (payload.eventType == 'INSERT') {
         const newItem: Chat = payload.new;
         this._chat.next([...this._chat.value, newItem]);

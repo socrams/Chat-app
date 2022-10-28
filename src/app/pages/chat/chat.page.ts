@@ -13,12 +13,12 @@ export interface currentSession {
 export interface User {
   email: string;
 }
-export interface datos {
-  nombre:string;
-  apellido:string;
-  edad:any;
-  mail:any;
-}
+// export interface datos {
+//   nombre:string;
+//   apellido:string;
+//   edad:any;
+//   mail:any;
+// }
 
 @Component({
   selector: 'app-chat',

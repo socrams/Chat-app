@@ -26,7 +26,7 @@ export class UserPage implements OnInit {
   }
 
   guardarCambios(){
-    
+    this.supabaseService.leerDatosUsuario();
 
   }
 }
