@@ -6,12 +6,6 @@ import { environment } from 'src/environments/environment.prod';
 
 const CHAT_DB = 'chat';
 
-export interface profile {
-  nombre:string;
-  apellido:string;
-  mail:any;
-  }
-
 export interface Chat {
   id: number;
   created_at: string;
@@ -27,11 +21,11 @@ export class SupabaseService {
   supabase:SupabaseClient;
   private _currentUser: BehaviorSubject<any> = new BehaviorSubject (null);
   private _chat: BehaviorSubject<any> = new BehaviorSubject ([]);
-  public profile:profile;
+  
   constructor(public router:Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey,{
-      //autoRefreshToken: true,
-      //persistSession:true,
+      autoRefreshToken: true,
+      persistSession:true,
     });
     this.supabase.auth.onAuthStateChange(( event,session )=>{
       if (event == 'SIGNED_IN'){
@@ -92,16 +86,8 @@ export class SupabaseService {
       apellido: credenciales.apellido, 
       mail:credenciales.email},
     ])
-  }
-  
-  async leerDatosUsuario(){
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
-    let {data:profile, error} = await this.supabase
-    .from('profiles')
-    .select('*')
-    .like('mail', this.supabase.auth.user()?.email)
-    console.log(profile)  
-  }
+  }  
+// this.supabase.auth.user()?.email
 
   cambiosChat() { //quitar evento update y delete.
     this.supabase.from(CHAT_DB).on('*', payload => {

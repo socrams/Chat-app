@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { createClient } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { environment } from 'src/environments/environment.prod';
+import * as internal from 'stream';
 
 @Component({
   selector: 'app-user',
@@ -8,10 +11,16 @@ import { SupabaseService } from 'src/app/services/supabase.service';
   styleUrls: ['./user.page.scss'],
 })
 export class UserPage implements OnInit {
-  
+  nombre: string;
+  apellido: string;
+  mail:string;
+  edad: number;
+  localidad: string;
+
+
   constructor(private router: Router,
     private supabaseService:SupabaseService) {
-
+      this.leerDatosUsuario();
   }
 
   ngOnInit() {
@@ -25,8 +34,30 @@ export class UserPage implements OnInit {
     this.supabaseService.salirUsuario();
   }
 
-  guardarCambios(){
-    this.supabaseService.leerDatosUsuario();
-
+  async guardarCambios(){  
+    const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
+    const { data, error } = await supabase
+    .from('profiles')
+    .update({ nombre: this.nombre, apellido:this.apellido, edad: this.edad, localidad: this.localidad})
+    .eq('mail', this.supabaseService.supabase.auth.user()?.email);
+    //console.log("datos: ", data, "| error ", error);
+    
   }
+
+  async leerDatosUsuario(){
+    const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
+    const {data:profiles, error}  = await supabase
+    .from('profiles')
+    .select('*')
+    .like('mail', supabase.auth.user()?.email);
+    profiles.forEach((element) => {
+    this.nombre = element.nombre;
+    this.apellido = element.apellido;
+    this.mail = element.mail;
+    this.edad = element.edad;
+    this.localidad = element.localidad;
+    })
+  }
+  
+
 }

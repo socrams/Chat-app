@@ -14,17 +14,27 @@
   <ion-list>
     <ion-item>
       <ion-label>Nombre</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="nombre"></ion-input>
     </ion-item>
   
     <ion-item>
       <ion-label>Apellido</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="apellido"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Edad</ion-label>
+      <ion-input [(ngModel)]="edad"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Localidad</ion-label>
+      <ion-input [(ngModel)]="localidad"></ion-input>
     </ion-item>
   
     <ion-item>
       <ion-label>Mail</ion-label>
-      <ion-input value="xxxx@xxx.com.ar" [disabled]="true"></ion-input>
+      <ion-input [(ngModel)]="mail" [disabled]="true"></ion-input>
     </ion-item>
   </ion-list>
 
