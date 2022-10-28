@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
-import { createClient } from "@supabase/supabase-js";
+import { createClient, AuthUser } from "@supabase/supabase-js";
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { environment } from 'src/environments/environment.prod';
 
