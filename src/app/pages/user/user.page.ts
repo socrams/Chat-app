@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
   selector: 'app-user',
@@ -6,10 +8,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user.page.scss'],
 })
 export class UserPage implements OnInit {
+  
+  constructor(private router: Router,
+    private supabaseService:SupabaseService) {
 
-  constructor() { }
+  }
 
   ngOnInit() {
   }
 
+  goChat(){
+    this.router.navigateByUrl('/chat');
+  }
+
+  salir(){
+    this.supabaseService.salirUsuario();
+  }
+
+  guardarCambios(){
+    
+
+  }
 }

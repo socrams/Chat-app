@@ -26,7 +26,7 @@ export class RegisterPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       apellido: ['',[Validators.required]],
-      name: ['',[Validators.required]],
+      nombre: ['',[Validators.required]],
     });  
   }
 
@@ -37,13 +37,12 @@ export class RegisterPage implements OnInit {
   async registrarUsuario(){
     const loading = await this.loadingController.create();
     await loading.present();
-    
     this.supabaseService.registrarUsuario(this.credenciales2.value).then(async session => {
       await loading.dismiss();
       this.showError('Registro Completo', 'Por favor confirme su email ahora');
+      this.router.navigateByUrl('login');
     },async err => { 
       await loading.dismiss();
-      this.router.navigateByUrl('');
       const alert = await this.alertController.create({
         header:'Registro fallido',
         message: err.msg,

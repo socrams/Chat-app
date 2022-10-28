@@ -48,7 +48,6 @@ export class SupabaseService {
   }
 
   async registrarUsuario(credenciales: {email: any, password: any, nombre:any, apellido:any }){
-
     return new Promise ( async (resolve, reject) => {
       const { error, session } = await this.supabase.auth.signUp(credenciales)
       if ( error ) {
@@ -56,8 +55,7 @@ export class SupabaseService {
       }else{
         resolve ( session );
         this.datosUsuario(credenciales);
-      }
-      });
+      }});
     }
 
   ingresarUsuario(credenciales: { email, password } ) {
@@ -86,7 +84,7 @@ export class SupabaseService {
     .from('profiles')
     .insert([
       { nombre: credenciales.nombre,apellido: credenciales.apellido, mail:credenciales.email},
-    ])  
+    ])
   }
 
   cambiosChat() { //quitar evento update y delete.
