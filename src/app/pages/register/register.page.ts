@@ -43,6 +43,7 @@ export class RegisterPage implements OnInit {
       this.showError('Registro Completo', 'Por favor confirme su email ahora');
     },async err => { 
       await loading.dismiss();
+      this.router.navigateByUrl('');
       const alert = await this.alertController.create({
         header:'Registro fallido',
         message: err.msg,
