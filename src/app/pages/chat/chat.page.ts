@@ -35,7 +35,9 @@ export class ChatPage implements OnInit {
 
   @ViewChild(IonContent, {read: IonContent, static: false}) mycontent: IonContent;
 
-  constructor(private supabaseService: SupabaseService) { }
+  constructor(private supabaseService: SupabaseService) { 
+    this.scrollToBottomOnInit();
+  }
   
 
   async enviarMessage() {
@@ -44,9 +46,9 @@ export class ChatPage implements OnInit {
     .from('chat')
     .insert(
       // { message: this.message , user: supabase.auth.user().email },
-
-      { message: this.message , user: (await this.supabaseService.getUser())}
-      );
+      { message: this.message ,
+        user: (await this.supabaseService.getUser()
+      )});      
       this.message = '';
       this.scrollToBottomOnInit();
     }

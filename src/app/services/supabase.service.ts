@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { IonContent } from '@ionic/angular';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import { ChatPage } from '../pages/chat/chat.page';
 
 const CHAT_DB = 'chat';
 
@@ -19,11 +21,11 @@ export interface Chat {
 
 export class SupabaseService {
   supabase:SupabaseClient;
-
+  @ViewChild(IonContent, {read: IonContent, static: false}) mycontent: IonContent;
   private _currentUser: BehaviorSubject<any> = new BehaviorSubject (null);
   private _chat: BehaviorSubject<any> = new BehaviorSubject ([]);
-  
-  constructor(public router:Router) {
+
+  constructor( public router:Router ) {
     //  this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey,{
     //    autoRefreshToken: true,
     //    persistSession:true,
@@ -55,8 +57,8 @@ export class SupabaseService {
     const { data: { session } } = await this.supabase.auth.getSession();
     return session.user.email;
 
-    
-  
+
+
   }
 
   async salirUsuario(){
@@ -99,23 +101,23 @@ export class SupabaseService {
     this._chat.next(query.data);
   }
 
-  async datosUsuario(credenciales:{email:any, nombre:any, apellido:any}){      
+  async datosUsuario(credenciales:{email:any, nombre:any, apellido:any}){
     this.conexion();
     //const supabase =  createClient(environment.supabaseUrl, environment.supabaseKey);
     const { error } = await this.supabase
     .from('profiles')
-    .insert([{ 
+    .insert([{
       nombre: credenciales.nombre,
-      apellido: credenciales.apellido, 
+      apellido: credenciales.apellido,
       mail:credenciales.email},
     ])
     console.log("datosUsuario: ",
       credenciales.nombre,
-      " ", credenciales.apellido, 
+      " ", credenciales.apellido,
       " ", credenciales.email,
     );
-    
-  }  
+
+  }
 // this.supabase.auth.user()?.email
 
   cambiosChat() { //quitar evento update y delete.
@@ -136,7 +138,7 @@ export class SupabaseService {
     //     })
     //     this._chat.next(newValue);
     //   }
-    // }).subscribe();  
+    // }).subscribe();
    const userListener = this.supabase.channel('all-users-changes')
     .on('postgres_changes',
     { event: '*', schema: 'public', table: 'chat' },
@@ -144,10 +146,12 @@ export class SupabaseService {
       //console.log("payload: ", payload);
       if (payload.eventType == 'INSERT'){
         console.log("datos msj: ", payload.new);
-        let nuevoChat = payload.new;       
-        this._chat.next([...this._chat.value, nuevoChat]);      
+        let nuevoChat = payload.new;
+        this._chat.next([...this._chat.value, nuevoChat]);
       }
     }).subscribe()
-  }
   
+  }
+
+
 }
