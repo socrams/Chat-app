@@ -28,15 +28,15 @@ export interface User {
 
 export class ChatPage implements OnInit {
   message: string;
-  conversacion: string = '';
+  //conversacion: string = '';
   chats = this.supabaseService.chat;
-  public supabase;
+  //public supabase;
   public mailLocal : string;
 
   @ViewChild(IonContent, {read: IonContent, static: false}) mycontent: IonContent;
 
   constructor(private supabaseService: SupabaseService) { }
-
+  
 
   async enviarMessage() {
     const supabase = createClient(environment.supabaseUrl,environment.supabaseKey);
@@ -55,7 +55,6 @@ export class ChatPage implements OnInit {
     // this.supabase = this.supabaseService.conexion();
     // const { data: { session }, error } = await this.supabase.au
     // console.log(session, error);
-    
     // return session.user.email;
     const email:Aboutme = JSON.parse(localStorage.getItem('sb-filfcskyxdjbkboinpgy-auth-token'));
     this.mailLocal = email.user.email;

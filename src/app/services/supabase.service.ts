@@ -8,7 +8,7 @@ const CHAT_DB = 'chat';
 
 export interface Chat {
   id: number;
-  created_at: string;
+  created_at: Date;
   user: string;
   message: string;
 }
@@ -125,6 +125,7 @@ export class SupabaseService {
     //   if (payload.eventType == 'INSERT') {
     //     const newItem: Chat = payload.new;
     //     this._chat.next([...this._chat.value, newItem]);
+
     //   } else if (payload.eventType == 'UPDATE') {
     //     const updatedItem: Chat = payload.new;
     //     const newValue = this._chat.value.map(item => {
@@ -135,34 +136,18 @@ export class SupabaseService {
     //     })
     //     this._chat.next(newValue);
     //   }
-    // }).subscribe();
-
-
-  /*   const userListener = supabase.from('users')
-   .on('*', 
-     (payload) => handleAllEventsPayload(payload.new)
-   )
-   .subscribe()   */
-  
+    // }).subscribe();  
    const userListener = this.supabase.channel('all-users-changes')
-   .on(
-     'postgres_changes',
-     { event: '*', schema: 'public', table: 'user' },
-     (payload) => {
-      console.log(payload);
-      
-     }
-   )
-   .subscribe()
-
-
-
-
-
-
-
-
-
+    .on('postgres_changes',
+    { event: '*', schema: 'public', table: 'chat' },
+    (payload) => {
+      //console.log("payload: ", payload);
+      if (payload.eventType == 'INSERT'){
+        console.log("datos msj: ", payload.new);
+        let nuevoChat = payload.new;       
+        this._chat.next([...this._chat.value, nuevoChat]);      
+      }
+    }).subscribe()
   }
   
 }
