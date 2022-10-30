@@ -4,10 +4,10 @@ import { createClient, AuthUser } from "@supabase/supabase-js";
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { environment } from 'src/environments/environment.prod';
 
-export interface CurrentSession {
-  currentSession: currentSession;
-}
-export interface currentSession {
+// export interface CurrentSession {
+//   currentSession: Aboutme;
+// }
+export interface Aboutme {
   user: User;
 }
 export interface User {
@@ -40,20 +40,29 @@ export class ChatPage implements OnInit {
 
   async enviarMessage() {
     const supabase = createClient(environment.supabaseUrl,environment.supabaseKey);
-    const {data, error } = await  supabase
+    const { data , error } = await  supabase
     .from('chat')
     .insert(
       // { message: this.message , user: supabase.auth.user().email },
-      { message: this.message , user: (await supabase.auth.getSession()).data.session.user.email}
+
+      { message: this.message , user: (await this.supabaseService.getUser())}
       );
       this.message = '';
       this.scrollToBottomOnInit();
     }
 
-  mensajes(){
-    const email:CurrentSession = JSON.parse(localStorage.getItem('supabase.auth.token'));
-    this.mailLocal = email.currentSession.user.email;
+  async mensajes(){
+    // this.supabase = this.supabaseService.conexion();
+    // const { data: { session }, error } = await this.supabase.au
+    // console.log(session, error);
+    
+    // return session.user.email;
+    const email:Aboutme = JSON.parse(localStorage.getItem('sb-filfcskyxdjbkboinpgy-auth-token'));
+    this.mailLocal = email.user.email;
+    //console.log(this.mailLocal);
+    
   }
+
   salir(){
     this.supabaseService.salirUsuario();
   }
@@ -64,7 +73,7 @@ export class ChatPage implements OnInit {
     }
 
     
-    scrollToBottomOnInit() {
+    scrollToBottomOnInit  () {
       setTimeout(() => {
           if (this.mycontent.scrollToBottom) {
               this.mycontent.scrollToBottom(400);

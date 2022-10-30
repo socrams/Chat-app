@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { environment } from 'src/environments/environment.prod';
-import * as internal from 'stream';
 
 @Component({
   selector: 'app-user',
@@ -16,6 +15,7 @@ export class UserPage implements OnInit {
   mail:string;
   edad: number;
   localidad: string;
+  supabase:SupabaseClient;
 
 
   constructor(private router: Router,
@@ -36,24 +36,25 @@ export class UserPage implements OnInit {
 
   async guardarCambios(){  
     const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
-    const { data, error } = await supabase
-    .from('profiles')
-    .update({ nombre: this.nombre, apellido:this.apellido, edad: this.edad, localidad: this.localidad})
-    .eq('mail', this.supabaseService.supabase.auth.user()?.email);
-    //console.log("datos: ", data, "| error ", error);
-    
+     const { data, error } = await supabase
+     .from('profiles')
+     .update( { 
+      nombre: this.nombre, apellido:this.apellido, edad: this.edad, localidad: this.localidad})
+    // .eq('mail', this.supabaseService.supabase.auth.user()?.email);
+     .eq('mail', this.mail);
+    // console.log("datos: ", data, "| user ", user);
   }
-
+  
   async leerDatosUsuario(){
     const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
-    const {data:profiles, error}  = await supabase
+    const {data : profiles, error}  = await supabase
     .from('profiles')
     .select('*')
-    .like('mail', supabase.auth.user()?.email);
+    .like('mail', await this.supabaseService.getUser());
     profiles.forEach((element) => {
     this.nombre = element.nombre;
     this.apellido = element.apellido;
-    this.mail = element.mail;
+    this.mail = element.mail;    
     this.edad = element.edad;
     this.localidad = element.localidad;
     })
