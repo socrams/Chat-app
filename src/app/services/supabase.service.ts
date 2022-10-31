@@ -9,10 +9,10 @@ import { ChatPage } from '../pages/chat/chat.page';
 const CHAT_DB = 'chat';
 
 export interface Chat {
-  id: number;
   created_at: Date;
-  user: string;
+  id: number;
   message: string;
+  user: string;
 }
 
 @Injectable({
@@ -116,7 +116,6 @@ export class SupabaseService {
       " ", credenciales.apellido,
       " ", credenciales.email,
     );
-
   }
 // this.supabase.auth.user()?.email
 
@@ -139,14 +138,14 @@ export class SupabaseService {
     //     this._chat.next(newValue);
     //   }
     // }).subscribe();
-   const userListener = this.supabase.channel('all-users-changes')
+    this.supabase.channel('all-users-changes')
     .on('postgres_changes',
     { event: '*', schema: 'public', table: 'chat' },
     (payload) => {
-      //console.log("payload: ", payload);
+      console.log("payload: ", payload);
       if (payload.eventType == 'INSERT'){
-        console.log("datos msj: ", payload.new);
-        let nuevoChat = payload.new;
+        const nuevoChat = payload.new;
+        //console.log( "nuevochat: ",nuevoChat);
         this._chat.next([...this._chat.value, nuevoChat]);
       }
     }).subscribe()
