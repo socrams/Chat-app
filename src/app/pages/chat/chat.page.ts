@@ -48,7 +48,6 @@ export class ChatPage implements OnInit{
     const email: Aboutme = JSON.parse(localStorage.getItem('sb-filfcskyxdjbkboinpgy-auth-token'));
     this.mailLocal = email.user.email;
     //console.log(this.mailLocal);
-    this.scrollToBottomOnInit();
   }
 
   salir(){

@@ -93,15 +93,12 @@ export class SupabaseService {
     });
   }
 
-  get chat(): Observable <Chat[] > {
-    return this._chat.asObservable();
-  }
-
+  
   async loadChats(){
     const query = await this.supabase.from(CHAT_DB).select('*');
     this._chat.next(query.data);
   }
-
+  
   async datosUsuario(credenciales:{email:any, nombre:any, apellido:any}){
     this.conexion();
     //const supabase =  createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -113,13 +110,13 @@ export class SupabaseService {
       mail:credenciales.email},
     ])
     console.log("datosUsuario: ",
-      credenciales.nombre,
-      " ", credenciales.apellido,
-      " ", credenciales.email,
+    credenciales.nombre,
+    " ", credenciales.apellido,
+    " ", credenciales.email,
     );
   }
-// this.supabase.auth.user()?.email
-
+  // this.supabase.auth.user()?.email
+  
   cambiosChat() { //quitar evento update y delete.
     this.supabase.channel('all-users-changes')
     .on('postgres_changes',
@@ -132,26 +129,11 @@ export class SupabaseService {
         this._chat.next([...this._chat.value, nuevoChat]);
       }
     }).subscribe()
-    // this.supabase.from(CHAT_DB).
-    // on('*', payload => {
-    //   //console.log('cambios: ', payload);
-    //   if (payload.eventType == 'INSERT') {
-    //     const newItem: Chat = payload.new;
-    //     this._chat.next([...this._chat.value, newItem]);
-    
-    //   } else if (payload.eventType == 'UPDATE') {
-    //     const updatedItem: Chat = payload.new;
-    //     const newValue = this._chat.value.map(item => {
-    //       if (updatedItem.id == item.id) {
-    //         item = updatedItem;
-    //       }
-    //       return item;
-    //     })
-    //     this._chat.next(newValue);
-    //   }
-    // }).subscribe();
-    
   }
 
-  
+  get chat(): Observable <Chat[] > {
+    return this._chat.asObservable();
+  }
+            
+            
 }
