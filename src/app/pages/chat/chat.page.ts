@@ -31,7 +31,7 @@ export class ChatPage implements OnInit, AfterContentChecked{
   ngAfterContentChecked(): void {
       this.scrollToBottomOnInit();
   }
-  
+
   async enviarMessage() {
     const supabase = createClient(environment.supabaseUrl,environment.supabaseKey);
     const { data , error } = await  supabase
@@ -62,8 +62,8 @@ export class ChatPage implements OnInit, AfterContentChecked{
   ngOnInit():void{
     this.mensajes();
     this.scrollToBottomOnInit();
-    }
-
+    this.ngAfterContentChecked();
+  }
     
     scrollToBottomOnInit  () {
       setTimeout(() => {
