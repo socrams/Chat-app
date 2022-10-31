@@ -17,21 +17,16 @@ export interface Aboutme {
   styleUrls: ['./chat.page.scss'],
 })
 
-export class ChatPage implements OnInit, AfterContentChecked{
+export class ChatPage implements OnInit{
   message: string;
   chats = this.supabaseService.chat;
   public mailLocal : string;
   
   @ViewChild(IonContent, {read: IonContent, static: false}) mycontent: IonContent;
 
-  constructor(private supabaseService: SupabaseService) { 
-    //this.scrollToBottomOnInit();
+  constructor(private supabaseService: SupabaseService) {
   }
   
-  ngAfterContentChecked(): void {
-      this.scrollToBottomOnInit();
-  }
-
   async enviarMessage() {
     const supabase = createClient(environment.supabaseUrl,environment.supabaseKey);
     const { data , error } = await  supabase
@@ -53,6 +48,7 @@ export class ChatPage implements OnInit, AfterContentChecked{
     const email: Aboutme = JSON.parse(localStorage.getItem('sb-filfcskyxdjbkboinpgy-auth-token'));
     this.mailLocal = email.user.email;
     //console.log(this.mailLocal);
+    this.scrollToBottomOnInit();
   }
 
   salir(){
@@ -62,7 +58,6 @@ export class ChatPage implements OnInit, AfterContentChecked{
   ngOnInit():void{
     this.mensajes();
     this.scrollToBottomOnInit();
-    this.ngAfterContentChecked();
   }
     
     scrollToBottomOnInit  () {

@@ -21,15 +21,16 @@ export interface Chat {
 
 export class SupabaseService {
   supabase:SupabaseClient;
-  @ViewChild(IonContent, {read: IonContent, static: false}) mycontent: IonContent;
   private _currentUser: BehaviorSubject<any> = new BehaviorSubject (null);
   private _chat: BehaviorSubject<any> = new BehaviorSubject ([]);
+
 
   constructor( public router:Router ) {
     //  this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey,{
     //    autoRefreshToken: true,
     //    persistSession:true,
     //  });
+    
     this.conexion();
     this.supabase.auth.onAuthStateChange(( event,session ) => {
       if (event == 'SIGNED_IN'){
@@ -120,24 +121,6 @@ export class SupabaseService {
 // this.supabase.auth.user()?.email
 
   cambiosChat() { //quitar evento update y delete.
-    // this.supabase.from(CHAT_DB).
-    // on('*', payload => {
-    //   //console.log('cambios: ', payload);
-    //   if (payload.eventType == 'INSERT') {
-    //     const newItem: Chat = payload.new;
-    //     this._chat.next([...this._chat.value, newItem]);
-
-    //   } else if (payload.eventType == 'UPDATE') {
-    //     const updatedItem: Chat = payload.new;
-    //     const newValue = this._chat.value.map(item => {
-    //       if (updatedItem.id == item.id) {
-    //         item = updatedItem;
-    //       }
-    //       return item;
-    //     })
-    //     this._chat.next(newValue);
-    //   }
-    // }).subscribe();
     this.supabase.channel('all-users-changes')
     .on('postgres_changes',
     { event: '*', schema: 'public', table: 'chat' },
@@ -149,8 +132,26 @@ export class SupabaseService {
         this._chat.next([...this._chat.value, nuevoChat]);
       }
     }).subscribe()
-  
+    // this.supabase.from(CHAT_DB).
+    // on('*', payload => {
+    //   //console.log('cambios: ', payload);
+    //   if (payload.eventType == 'INSERT') {
+    //     const newItem: Chat = payload.new;
+    //     this._chat.next([...this._chat.value, newItem]);
+    
+    //   } else if (payload.eventType == 'UPDATE') {
+    //     const updatedItem: Chat = payload.new;
+    //     const newValue = this._chat.value.map(item => {
+    //       if (updatedItem.id == item.id) {
+    //         item = updatedItem;
+    //       }
+    //       return item;
+    //     })
+    //     this._chat.next(newValue);
+    //   }
+    // }).subscribe();
+    
   }
 
-
+  
 }

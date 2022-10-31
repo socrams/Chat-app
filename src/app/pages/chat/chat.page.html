@@ -31,8 +31,9 @@
 <ion-footer>
   <ion-item>
     <!-- <ion-label ></ion-label> -->
+    
     <ion-input (keyup.enter)="enviarMessage()" type="text" placeholder="mensaje" [(ngModel)]="message"></ion-input>
-    <ion-button type="submit" (click)="enviarMessage()">Enviar</ion-button>
+    <ion-icon name="send-outline" (click)="enviarMessage()" ></ion-icon>
   </ion-item>
 </ion-footer>
 
