@@ -48,6 +48,13 @@ export class LoginPage implements OnInit {
   registrarUsuario() {
     this.router.navigateByUrl('/register', { replaceUrl: true })
   }
+
+  async loginGoogle(){
+    const { data, error } = await this.supabaseService.supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+    }
+
   goChat() {
     this.router.navigateByUrl('/chat', { replaceUrl: true })
   }

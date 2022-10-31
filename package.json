@@ -29,6 +29,7 @@
     "build": "0.1.4",
     "cordova-android": "10.1.2",
     "cordova-plugin-firebase": "^2.0.5",
+    "deploy": "1.0.3",
     "firebase": "^9.13.0",
     "gradle": "^1.2.4",
     "ionicons": "^6.0.3",
