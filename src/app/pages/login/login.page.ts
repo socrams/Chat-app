@@ -22,7 +22,12 @@ export class LoginPage implements OnInit {
     private loadingController: LoadingController,
   ) { }
 
-
+  async loginGoogle(){
+    const { data, error } = await this.supabaseService.supabase.auth.signInWithOAuth({
+        provider: 'google',
+      })
+    }
+    
   ngOnInit() {
     this.credenciales = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
