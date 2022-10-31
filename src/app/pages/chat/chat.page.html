@@ -20,9 +20,7 @@
       </div>
     </ion-col>
     <ion-col offset="2" size="10" *ngIf="chat.user === this.mailLocal" class="message other-message">
-      
       <span>{{chat.message}}</span>
-    
       <div class="time ion-text-right"><br>
         {{chat.created_at | date:'shortTime'}}
       </div>
@@ -32,8 +30,8 @@
 
 <ion-footer>
   <ion-item>
-    <ion-label></ion-label>
-    <ion-input placeholder="mensaje" [(ngModel)]="message"></ion-input>
+    <!-- <ion-label ></ion-label> -->
+    <ion-input (keyup.enter)="enviarMessage()" type="text" placeholder="mensaje" [(ngModel)]="message"></ion-input>
     <ion-button type="submit" (click)="enviarMessage()">Enviar</ion-button>
   </ion-item>
 </ion-footer>
