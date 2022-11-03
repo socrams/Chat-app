@@ -21,7 +21,7 @@ export class ChatPage implements OnInit{
   message: string;
   chats = this.supabaseService.chat;
   public mailLocal : string;
-  
+  localidad: string;  
   @ViewChild(IonContent, {read: IonContent, static: false}) mycontent: IonContent;
 
   constructor(private supabaseService: SupabaseService) {
@@ -33,12 +33,27 @@ export class ChatPage implements OnInit{
     .from('chat')
     .insert(
       // { message: this.message , user: supabase.auth.user().email },
-      { message: this.message ,
-        user: (await this.supabaseService.getUser()
-      )});      
+      { message: this.message,
+        user: (await this.supabaseService.getUser()), 
+        localidad: (this.leerDatosUsuario())
+      });      
       this.message = '';
       this.scrollToBottomOnInit();
     }
+
+    async leerDatosUsuario(){
+      const supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
+      const {data : profiles, error}  = await supabase
+      .from('profiles')
+      .select('*')
+      .like('mail', await this.supabaseService.getUser());
+      profiles.forEach((element) => {
+      this.localidad = element.localidad; 
+      console.log("localidad: ",element.localidad);       
+      })
+    }
+
+
 
   async mensajes(){
     // this.supabase = this.supabaseService.conexion();
@@ -47,6 +62,7 @@ export class ChatPage implements OnInit{
     // return session.user.email;
     const email: Aboutme = JSON.parse(localStorage.getItem('sb-filfcskyxdjbkboinpgy-auth-token'));
     this.mailLocal = email.user.email;
+    
     //console.log(this.mailLocal);
   }
 

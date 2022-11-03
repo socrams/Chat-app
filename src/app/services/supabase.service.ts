@@ -13,6 +13,7 @@ export interface Chat {
   id: number;
   message: string;
   user: string;
+  localidad: string;
 }
 
 @Injectable({
@@ -125,7 +126,6 @@ export class SupabaseService {
       console.log("payload: ", payload);
       if (payload.eventType == 'INSERT'){
         const nuevoChat = payload.new;
-        //console.log( "nuevochat: ",nuevoChat);
         this._chat.next([...this._chat.value, nuevoChat]);
       }
     }).subscribe()
