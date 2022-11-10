@@ -10,13 +10,15 @@
     <small>{{mailLocal}}</small>
   </ion-toolbar>
 </ion-header>
-
+    <ion-searchbar 
+        placeholder="Filtro" [(ngModel)]="buscar" 
+        showCancelButton="focus" animated>
+    </ion-searchbar>
 <ion-content class="ion-padding" #mycontent>
-  <ion-row  *ngFor="let chat of chats | async" id="ver">
+     <ion-row  *ngFor="let chat of chats | async | filter: buscar" id="ver">
     <ion-col size="10" *ngIf="chat.user != this.mailLocal" class="message my-message">
     <span><div class=""><u>{{chat.user}}:</u></div>{{chat.message}}
       {{localidad}}</span>
-     
       <div class="time ion-text-right"><br>
         {{chat.created_at | date:'shortTime'}}
       </div>

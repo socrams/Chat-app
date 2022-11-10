@@ -18,6 +18,8 @@ export interface Aboutme {
 })
 
 export class ChatPage implements OnInit{
+  buscar: string;
+
   message: string;
   chats = this.supabaseService.chat;
   public mailLocal : string;
