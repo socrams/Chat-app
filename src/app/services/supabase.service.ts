@@ -1,10 +1,8 @@
 import { Injectable, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent } from '@ionic/angular';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { ChatPage } from '../pages/chat/chat.page';
 
 const CHAT_DB = 'chat';
 
@@ -44,7 +42,7 @@ export class SupabaseService {
     });
   }
 
- conexion(): void{
+ conexion(): void {
    this.supabase =  createClient(environment.supabaseUrl, environment.supabaseKey,{
        db: {
          schema: 'public'
@@ -70,7 +68,7 @@ export class SupabaseService {
     this.router.navigateByUrl('/');
   }
 
-  async registrarUsuario(credenciales: {email: any, password: any, nombre:any, apellido:any }){
+  async registrarUsuario(credenciales: {email: any, password: any, nombre:any, apellido:any, fecha:any }){
     return new Promise ( async (resolve, reject) => {
 //      const { error, session } = await this.supabase.auth.signUp(credenciales)
       const { data: { user }, error } = await this.supabase.auth.signUp(credenciales);
@@ -101,7 +99,15 @@ export class SupabaseService {
   }
   
   async datosUsuario(credenciales:{email:any, nombre:any, apellido:any}){
-    this.conexion();
+    const supabase =  createClient(environment.supabaseUrl, environment.supabaseKey,{
+      db: {
+        schema: 'public'
+      },
+      auth: {
+        persistSession: true
+      }
+    })
+    // this.conexion();
     //const supabase =  createClient(environment.supabaseUrl, environment.supabaseKey);
     const { error } = await this.supabase
     .from('profiles')
@@ -110,7 +116,7 @@ export class SupabaseService {
       apellido: credenciales.apellido,
       mail:credenciales.email},
     ])
-    console.log("datosUsuario: ",
+    console.log("datosUsuarios: ",
     credenciales.nombre,
     " ", credenciales.apellido,
     " ", credenciales.email,

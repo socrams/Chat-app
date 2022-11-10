@@ -13,9 +13,11 @@ export class UserPage implements OnInit {
   nombre: string;
   apellido: string;
   mail:string;
-  edad: number;
+  //edad: number;
   localidad: string;
   supabase:SupabaseClient;
+  fecha: Date ;
+  edad1: number;
 
 
   constructor(private router: Router,
@@ -24,8 +26,16 @@ export class UserPage implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
+
+  calcularEdad(){
+      const convertAge = new Date(this.fecha);
+      const timeDiff = Math.abs(Date.now() - convertAge.getTime());
+      this.edad1 = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+  }
+  
   goChat(){
     this.router.navigateByUrl('/chat');
   }
@@ -39,10 +49,11 @@ export class UserPage implements OnInit {
      const { data, error } = await supabase
      .from('profiles')
      .update( { 
-      nombre: this.nombre, apellido:this.apellido, edad: this.edad, localidad: this.localidad})
+      nombre: this.nombre, apellido:this.apellido, localidad: this.localidad, fecha: this.fecha})
     // .eq('mail', this.supabaseService.supabase.auth.user()?.email);
      .eq('mail', this.mail);
     // console.log("datos: ", data, "| user ", user);
+    this.leerDatosUsuario()
   }
   
   async leerDatosUsuario(){
@@ -54,10 +65,11 @@ export class UserPage implements OnInit {
     profiles.forEach((element) => {
     this.nombre = element.nombre;
     this.apellido = element.apellido;
-    this.mail = element.mail;    
-    this.edad = element.edad;
+    this.mail = element.mail;
     this.localidad = element.localidad;
+    this.fecha = element.fecha;
     })
+    this.calcularEdad();
   }
   
 

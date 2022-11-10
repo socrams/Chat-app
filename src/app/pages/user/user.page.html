@@ -24,7 +24,12 @@
 
     <ion-item>
       <ion-label>Edad</ion-label>
-      <ion-input [(ngModel)]="edad"></ion-input>
+      <ion-input [(ngModel)]="edad1"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Fecha</ion-label>
+      <ion-input type="date"[(ngModel)]="fecha"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -41,4 +46,10 @@
   <ion-button type="button" expand="block" (click)="goChat()" color="secondary"> chat </ion-button>
   
   <ion-button type="button" expand="block" (click)="guardarCambios()" color="secondary"> Guardar Cambios </ion-button>
+
+  <!-- <ion-item>
+    <ion-label>Calcular Edad: </ion-label>
+    <ion-input [(ngModel)]="edad1"></ion-input>
+  </ion-item>
+  <ion-button (click)="calcularEdad()">es</ion-button> -->
 </ion-content>

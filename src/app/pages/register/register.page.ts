@@ -27,13 +27,14 @@ export class RegisterPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       apellido: ['',[Validators.required]],
       nombre: ['',[Validators.required]],
+      fecha:['',[Validators.required]],
     });  
   }
 
-  mostrar(){
-    console.log(this.credenciales2.value.age);
-    console.log(this.credenciales2.value.name);
-  }
+  // mostrar(){
+  //   console.log(this.credenciales2.value.age);
+  //   console.log(this.credenciales2.value.name);
+  // }
   async registrarUsuario(){
     const loading = await this.loadingController.create();
     await loading.present();
