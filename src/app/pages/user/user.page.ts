@@ -20,13 +20,12 @@ export class UserPage implements OnInit {
   edad1: number;
 
 
-  constructor(private router: Router,
-    private supabaseService:SupabaseService) {
-      this.leerDatosUsuario();
+  constructor(private router: Router, private supabaseService:SupabaseService) {
+    this.leerDatosUsuario();
   }
 
   ngOnInit() {
-    
+    //this.leerDatosUsuario();
   }
 
 
@@ -69,6 +68,9 @@ export class UserPage implements OnInit {
     this.localidad = element.localidad;
     this.fecha = element.fecha;
     })
+    
+    // var arr = this.mail.split("@");
+    // this.mail = arr[0];
     this.calcularEdad();
   }
   

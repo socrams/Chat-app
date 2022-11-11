@@ -17,8 +17,9 @@
 <ion-content class="ion-padding" #mycontent>
      <ion-row  *ngFor="let chat of chats | async | filter: buscar" id="ver">
     <ion-col size="10" *ngIf="chat.user != this.mailLocal" class="message my-message">
-    <span><div class=""><u>{{chat.user}}:</u></div>{{chat.message}}
-      {{localidad}}</span>
+    <span><div class=""><u>{{chat.user}}</u></div>{{chat.message}}
+      <!-- {{localidad}} -->
+    </span>
       <div class="time ion-text-right"><br>
         {{chat.created_at | date:'shortTime'}}
       </div>
